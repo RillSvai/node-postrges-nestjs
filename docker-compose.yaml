@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: node-postgres-nestjs-postgres
+    ports:
+      - '5432:5432'
+    env_file:
+      - ./envs/.env.development
+    volumes:
+      - node-postgres-nestjs-postgres-data:/var/lib/postgresql/data
+      - ./src/common/database/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+    networks:
+      - node-postgres-nestjs-postgres-network
+    restart: unless-stopped
+
+volumes:
+  node-postgres-nestjs-postgres-data:
+    name: node-postgres-nestjs-postgres-data
+    driver: local
+
+networks:
+  node-postgres-nestjs-postgres-network:
+    name: node-postgres-nestjs-postgres-network
+    driver: bridge
