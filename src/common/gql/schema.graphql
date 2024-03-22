@@ -1,0 +1,16 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Product {
+  description: String
+  id: Int!
+  name: String!
+  price: Float!
+  stockQuantity: Float!
+  weight: Float!
+}
+
+type Query {
+  findAll(limit: Int, offset: Int! = 0): [Product!]!
+}
