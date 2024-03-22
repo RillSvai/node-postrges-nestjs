@@ -11,9 +11,10 @@ export class ProductsRepository {
 
   public async findAll(paginationArgs: PaginationArgs): Promise<Product[]> {
     let query = FIND_ALL_QUERY;
-    query = this.databaseService.includePagination(paginationArgs, query);
+    const params = [];
+    query = this.databaseService.includePagination(paginationArgs.offset, paginationArgs.limit, query, params);
 
-    const result: QueryResult = await this.databaseService.query(query);
+    const result: QueryResult = await this.databaseService.query(query, params);
 
     return [];
   }

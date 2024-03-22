@@ -42,12 +42,17 @@ export class DatabaseService implements OnModuleInit, OnModuleDestroy {
     return result;
   }
 
-  public includePagination(paginationArgs: PaginationArgs, query: string): string {
-    if (paginationArgs.offset !== 0) {
-      query += ` OFFSET ${paginationArgs.offset}`;
+  public includePagination(offset: number, limit: number, query: string, params: any[]): string {
+    let paramIndex: number = (params?.length ?? 0) + 1;
+
+    if (offset && offset >= 1) {
+      query += ` OFFSET $${paramIndex++}`;
+      params.push(offset);
     }
-    if (paginationArgs.limit) {
-      query += ` LIMIT ${paginationArgs.limit}`;
+
+    if (limit && limit >= 1) {
+      query += ` LIMIT $${paramIndex}`;
+      params.push(limit);
     }
     return query;
   }
