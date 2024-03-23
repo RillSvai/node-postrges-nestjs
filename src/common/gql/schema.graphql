@@ -8,12 +8,12 @@ enum FilterOperator {
 }
 
 input FloatColumnFilterInput {
-  operation: NumericFilterOption!
+  option: NumericFilterOption!
   value: Float!
 }
 
 input IntColumnFilterInput {
-  operation: NumericFilterOption!
+  option: NumericFilterOption!
   value: Int!
 }
 
@@ -42,11 +42,11 @@ input ProductFilterInput {
 }
 
 type Query {
-  findAll(filterInputs: ProductFilterInput, limit: Int, offset: Int! = 0): [Product!]!
+  findAll(filterInput: ProductFilterInput, limit: Int, offset: Int! = 0): [Product!]!
 }
 
 input StringColumnFilterInput {
-  operation: StringFilterOption!
+  option: StringFilterOption!
   value: String!
 }
 

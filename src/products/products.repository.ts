@@ -1,5 +1,5 @@
-import { FilterOption } from './../common/database/options/filter.option';
-import { ProductsRowMapper } from './mappers/products.row-mapper';
+import { ColumnFilter } from '../common/database/column-filter';
+import { ProductRowMapper } from './mappers/product-row.mapper';
 import { Injectable } from '@nestjs/common';
 import { PaginationArgs } from 'src/common/application/args/pagination.args';
 import { DatabaseService } from 'src/common/database/database.service';
@@ -12,7 +12,7 @@ import { ProductFilterInput } from './inputs/product-filter.input';
 export class ProductsRepository {
   constructor(
     private readonly databaseService: DatabaseService,
-    private readonly productsRowMapper: ProductsRowMapper,
+    private readonly rowMapper: ProductRowMapper,
   ) {}
 
   public async findAll(paginationArgs: PaginationArgs, filterInput: ProductFilterInput): Promise<Product[]> {
@@ -20,7 +20,7 @@ export class ProductsRepository {
     const params = [];
 
     if (filterInput) {
-      const filters: FilterOption[] = this.createProductFilters(filterInput);
+      const filters: ColumnFilter[] = this.createProductFilters(filterInput);
       query = this.databaseService.includeFilters(filters, filterInput.filterOperator, query, params);
     }
 
@@ -28,16 +28,16 @@ export class ProductsRepository {
 
     const result: QueryResult = await this.databaseService.query(query, params);
 
-    return this.productsRowMapper.rowArrayToEntities(result.rows);
+    return this.rowMapper.rowArrayToEntities(result.rows);
   }
 
   private createProductFilters(filterInput: ProductFilterInput) {
-    const filters: FilterOption[] = [];
+    const filters: ColumnFilter[] = [];
 
-    if (filterInput.name) filters.push(new FilterOption(filterInput.name, 'name'));
-    if (filterInput.price) filters.push(new FilterOption(filterInput.price, 'price'));
-    if (filterInput.stockQuantity) filters.push(new FilterOption(filterInput.stockQuantity, 'stock_quantity'));
-    if (filterInput.weight) filters.push(new FilterOption(filterInput.weight, 'weight'));
+    if (filterInput.name) filters.push(new ColumnFilter(filterInput.name, 'name'));
+    if (filterInput.price) filters.push(new ColumnFilter(filterInput.price, 'price'));
+    if (filterInput.stockQuantity) filters.push(new ColumnFilter(filterInput.stockQuantity, 'stock_quantity'));
+    if (filterInput.weight) filters.push(new ColumnFilter(filterInput.weight, 'weight'));
 
     return filters;
   }

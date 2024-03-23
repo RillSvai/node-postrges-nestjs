@@ -2,7 +2,7 @@ import { Field, InputType } from '@nestjs/graphql';
 import { FloatColumnFilterInput } from 'src/common/application/inputs/filters/float-column.filter';
 import { IntColumnFilterInput } from 'src/common/application/inputs/filters/int-column.filter';
 import { StringColumnFilterInput } from 'src/common/application/inputs/filters/string-column.filter';
-import { FilterOperator } from 'src/common/database/enums/filter.operator';
+import { FilterOperator } from 'src/common/database/enums/filter-operator.enum';
 
 @InputType()
 export class ProductFilterInput {

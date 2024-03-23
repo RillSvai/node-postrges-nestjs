@@ -11,7 +11,7 @@ export class ProductsResolver {
   @Query(() => [Product!]!)
   public async findAll(
     @Args() paginationArgs: PaginationArgs,
-    @Args('filterInputs', { type: () => ProductFilterInput!, nullable: true }) filterInput: ProductFilterInput,
+    @Args('filterInput', { type: () => ProductFilterInput!, nullable: true }) filterInput: ProductFilterInput,
   ): Promise<Product[]> {
     return await this.productsService.findAll(paginationArgs, filterInput);
   }

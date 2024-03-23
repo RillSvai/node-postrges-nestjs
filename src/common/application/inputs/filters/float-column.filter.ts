@@ -1,11 +1,11 @@
 import { Field, Float, InputType } from '@nestjs/graphql';
-import { BaseFilterInput } from './base.filter';
+import { FilterInput } from './filter';
 import { NumericFilterOption } from '../../enums/filter-options/numeric.filter-option';
 
 @InputType()
-export class FloatColumnFilterInput implements BaseFilterInput<NumericFilterOption, number> {
+export class FloatColumnFilterInput implements FilterInput<NumericFilterOption, number> {
   @Field(() => NumericFilterOption)
-  operation: NumericFilterOption;
+  option: NumericFilterOption;
 
   @Field(() => Float)
   value: number;

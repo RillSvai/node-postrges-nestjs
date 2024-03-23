@@ -2,8 +2,8 @@ import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Pool, PoolConfig } from 'pg';
 import { QueryLog } from './interfaces/query-log.interface';
-import { FilterOperator } from './enums/filter.operator';
-import { FilterOption } from './options/filter.option';
+import { ColumnFilter } from './column-filter';
+import { FilterOperator } from './enums/filter-operator.enum';
 
 @Injectable()
 export class DatabaseService implements OnModuleInit, OnModuleDestroy {
@@ -67,7 +67,7 @@ export class DatabaseService implements OnModuleInit, OnModuleDestroy {
   }
 
   public includeFilters(
-    filterOptions: FilterOption[],
+    columnFilters: ColumnFilter[],
     filterOperator: FilterOperator,
     query: string,
     params: any[] = [],
@@ -76,9 +76,9 @@ export class DatabaseService implements OnModuleInit, OnModuleDestroy {
 
     const conditions: string[] = [];
 
-    filterOptions.forEach((option) => {
-      option.filters.forEach((filter) => {
-        conditions.push(` ${option.column} ${this.operationToSql[filter.operation]} $${paramIndex++}`);
+    columnFilters.forEach((columnFilter) => {
+      columnFilter.filterInputs.forEach((filter) => {
+        conditions.push(` ${columnFilter.column} ${this.operationToSql[filter.option]} $${paramIndex++}`);
         params.push(filter.value);
       });
     });
