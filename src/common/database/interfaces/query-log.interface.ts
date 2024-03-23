@@ -1,5 +1,6 @@
 export interface QueryLog {
   text: string;
-  duration: number;
+  duration: string;
   rowCount?: number;
+  params: any[];
 }

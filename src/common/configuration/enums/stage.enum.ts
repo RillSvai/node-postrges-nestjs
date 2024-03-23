@@ -4,5 +4,5 @@ export enum Stage {
   Staging = 'staging',
   Qa = 'qa',
   Test = 'test',
-  Default = 'default',
+  Default = '',
 }

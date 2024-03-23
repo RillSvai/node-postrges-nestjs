@@ -11,7 +11,7 @@ export abstract class ConfigurationUtil {
   }
 
   public static getValidationSchema() {
-    const schema = joi.object({
+    const validationSchema = joi.object({
       HTTP_PORT: joi.number().required().min(0).max(65535),
       POSTGRES_USER: joi.string().required(),
       POSTGRES_PASSWORD: joi.string().required(),
@@ -21,6 +21,6 @@ export abstract class ConfigurationUtil {
       POSTGRES_MAX_CLIENT_CONNECTIONS: joi.number().required().min(5),
     });
 
-    return schema;
+    return validationSchema;
   }
 }
