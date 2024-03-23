@@ -2,8 +2,9 @@ import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Pool, PoolConfig } from 'pg';
 import { QueryLog } from './interfaces/query-log.interface';
-import { ColumnFilter } from './column-filter';
+import { ColumnFilter } from './select-options/column-filter.select-option';
 import { FilterOperator } from './enums/filter-operator.enum';
+import { ColumnSorting } from './select-options/column-sorting.select-option';
 
 @Injectable()
 export class DatabaseService implements OnModuleInit, OnModuleDestroy {
@@ -86,6 +87,21 @@ export class DatabaseService implements OnModuleInit, OnModuleDestroy {
     if (conditions.length !== 0) {
       query += ' WHERE';
       query += conditions.join(` ${filterOperator}`);
+    }
+
+    return query;
+  }
+
+  public includeSorting(columnSortings: ColumnSorting[], query: string) {
+    const criterias = [];
+
+    columnSortings.forEach((columnSorting) => {
+      criterias.push(` ${columnSorting.column} ${columnSorting.sortOrder}`);
+    });
+
+    if (criterias.length !== 0) {
+      query += ' ORDER BY';
+      query += criterias.join(',');
     }
 
     return query;

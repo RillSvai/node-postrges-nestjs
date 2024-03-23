@@ -10,14 +10,14 @@ export class ProductFilterInput {
   filterOperator: FilterOperator;
 
   @Field(() => [StringColumnFilterInput], { nullable: true })
-  name: StringColumnFilterInput[];
+  name?: StringColumnFilterInput[];
 
   @Field(() => [FloatColumnFilterInput], { nullable: true })
-  price: FloatColumnFilterInput[];
+  price?: FloatColumnFilterInput[];
 
   @Field(() => [IntColumnFilterInput], { nullable: true })
-  stockQuantity: IntColumnFilterInput[];
+  stockQuantity?: IntColumnFilterInput[];
 
   @Field(() => [FloatColumnFilterInput], { nullable: true })
-  weight: FloatColumnFilterInput[];
+  weight?: FloatColumnFilterInput[];
 }
