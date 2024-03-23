@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Product } from '../entities/product.entity';
+import { Product, ProductColumns } from '../entities/product.entity';
 import { RowMapper } from 'src/common/application/row-mapper';
 
 @Injectable()
@@ -11,12 +11,12 @@ export class ProductRowMapper implements RowMapper<Product> {
   public rowToEntity(rowData: any): Product {
     const product = new Product();
 
-    product.id = rowData.id;
-    product.name = rowData.name;
-    product.description = rowData.description;
-    product.price = rowData.price;
-    product.stockQuantity = rowData.stock_quantity;
-    product.weight = rowData.weight;
+    product.id = rowData[ProductColumns.Id];
+    product.name = rowData[ProductColumns.Name];
+    product.description = rowData[ProductColumns.Description];
+    product.price = rowData[ProductColumns.Price];
+    product.stockQuantity = rowData[ProductColumns.StockQuantity];
+    product.weight = rowData[ProductColumns.Weight];
 
     return product;
   }

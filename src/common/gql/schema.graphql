@@ -41,8 +41,20 @@ input ProductFilterInput {
   weight: [FloatColumnFilterInput!]
 }
 
+input ProductSortingInput {
+  name: SortOrder
+  price: SortOrder
+  stockQuantity: SortOrder
+  weight: SortOrder
+}
+
 type Query {
-  findAll(filterInput: ProductFilterInput, limit: Int, offset: Int! = 0): [Product!]!
+  findAll(filterInput: ProductFilterInput, limit: Int, offset: Int! = 0, sortingInput: ProductSortingInput): [Product!]!
+}
+
+enum SortOrder {
+  Asc
+  Desc
 }
 
 input StringColumnFilterInput {

@@ -1,3 +1,8 @@
 # Overview
 
-Simple backend application using node-postgres (pg) with filtering, pagination and sorting over products (single entity). 
+Robust backend application with filtering, pagination and sorting over products (single entity).
+
+# Key libraries
+* pg
+* graphql
+* @apollo/server

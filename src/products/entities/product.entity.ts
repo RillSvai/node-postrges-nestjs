@@ -24,3 +24,14 @@ export class Product {
 
   updatedAt: Date;
 }
+
+export enum ProductColumns {
+  Id = 'id',
+  Name = 'name',
+  Description = 'description',
+  Price = 'price',
+  StockQuantity = 'stock_quantity',
+  Weight = 'weight',
+  CreatedAt = 'created_at',
+  UpdatedAt = 'updated_at',
+}
