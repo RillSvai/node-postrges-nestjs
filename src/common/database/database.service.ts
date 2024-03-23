@@ -2,12 +2,20 @@ import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Pool, PoolConfig } from 'pg';
 import { QueryLog } from './interfaces/query-log.interface';
-import { PaginationArgs } from '../args/pagination.args';
+import { FilterOperator } from './enums/filter.operator';
+import { FilterOption } from './options/filter.option';
 
 @Injectable()
 export class DatabaseService implements OnModuleInit, OnModuleDestroy {
   private pool: Pool;
-
+  private readonly operationToSql = {
+    gt: '>',
+    lt: '<',
+    et: '=',
+    net: '<>',
+    l: 'LIKE',
+    nl: 'NOT LIKE',
+  };
   constructor(private readonly configService: ConfigService) {}
 
   public async onModuleInit(): Promise<void> {
@@ -36,14 +44,15 @@ export class DatabaseService implements OnModuleInit, OnModuleDestroy {
       text,
       duration: `${duration} ms`,
       rowCount: result.rowCount,
+      params,
     };
     console.log(`Executed query:\n${JSON.stringify(queryLog, null, 2)}`);
 
     return result;
   }
 
-  public includePagination(offset: number, limit: number, query: string, params: any[]): string {
-    let paramIndex: number = (params?.length ?? 0) + 1;
+  public includePagination(offset: number, limit: number, query: string, params: any[] = []): string {
+    let paramIndex: number = params.length + 1;
 
     if (offset && offset >= 1) {
       query += ` OFFSET $${paramIndex++}`;
@@ -54,6 +63,31 @@ export class DatabaseService implements OnModuleInit, OnModuleDestroy {
       query += ` LIMIT $${paramIndex}`;
       params.push(limit);
     }
+    return query;
+  }
+
+  public includeFilters(
+    filterOptions: FilterOption[],
+    filterOperator: FilterOperator,
+    query: string,
+    params: any[] = [],
+  ): string {
+    let paramIndex: number = params.length + 1;
+
+    const conditions: string[] = [];
+
+    filterOptions.forEach((option) => {
+      option.filters.forEach((filter) => {
+        conditions.push(` ${option.column} ${this.operationToSql[filter.operation]} $${paramIndex++}`);
+        params.push(filter.value);
+      });
+    });
+
+    if (conditions.length !== 0) {
+      query += ' WHERE';
+      query += conditions.join(` ${filterOperator}`);
+    }
+
     return query;
   }
 }
