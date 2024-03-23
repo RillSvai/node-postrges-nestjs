@@ -2,6 +2,28 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+enum FilterOperator {
+  And
+  Or
+}
+
+input FloatColumnFilterInput {
+  operation: NumericFilterOption!
+  value: Float!
+}
+
+input IntColumnFilterInput {
+  operation: NumericFilterOption!
+  value: Int!
+}
+
+enum NumericFilterOption {
+  EqualTo
+  GreaterThan
+  LessThan
+  NotEqualTo
+}
+
 type Product {
   description: String
   id: Int!
@@ -11,6 +33,26 @@ type Product {
   weight: Float!
 }
 
+input ProductFilterInput {
+  filterOperator: FilterOperator!
+  name: [StringColumnFilterInput!]
+  price: [FloatColumnFilterInput!]
+  stockQuantity: [IntColumnFilterInput!]
+  weight: [FloatColumnFilterInput!]
+}
+
 type Query {
-  findAll(limit: Int, offset: Int! = 0): [Product!]!
+  findAll(filterInputs: ProductFilterInput, limit: Int, offset: Int! = 0): [Product!]!
+}
+
+input StringColumnFilterInput {
+  operation: StringFilterOption!
+  value: String!
+}
+
+enum StringFilterOption {
+  EqualTo
+  Like
+  NotEqualTo
+  NotLike
 }
